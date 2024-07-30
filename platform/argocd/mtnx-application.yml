@@ -1,0 +1,32 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sgt-recharge
+spec:
+  destination:
+    name: ''
+    namespace: sgt-apps
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: helm
+    repoURL: 'https://github.com/tkhalane/sgt-demo'
+    targetRevision: HEAD
+  sources: []
+  project: sgt-apps
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sgt-platform
+spec:
+  destination:
+    name: ''
+    namespace: sgt-cloudresources
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: platform/resources
+    repoURL: 'https://github.com/tkhalane/sgt-demo'
+    targetRevision: HEAD
+  sources: []
+  project: sgt-apps

@@ -1,0 +1,10 @@
+apiVersion: cosmosdb.azure.upbound.io/v1beta1
+kind: MongoDatabase
+metadata:
+  labels:
+    sgt.com/nosql-db: mtnid-mongo
+  name: sgt-mongo-database
+spec:
+  forProvider:
+    accountName: sgt-mongo
+    resourceGroupName: platform-engineering-sg

@@ -1,0 +1,88 @@
+{
+  "identifier": "workload",
+  "title": "Running Service",
+  "icon": "Argo",
+  "schema": {
+    "properties": {
+      "locked": {
+        "type": "boolean",
+        "title": "Locked",
+        "description": "Indicate if deploying is allow for microservice in a this environment",
+        "default": false
+      },
+      "version": {
+        "title": "Image Tag",
+        "type": "string",
+        "description": "The deployed image tag",
+        "icon": "Git"
+      },
+      "commitSha": {
+        "type": "string",
+        "title": "Commit SHA"
+      },
+      "cpuLimit": {
+        "type": "number",
+        "title": "CPU limit"
+      },
+      "memoryLimit": {
+        "type": "number",
+        "title": "Memory limit"
+      },
+      "pullRequest": {
+        "type": "string",
+        "format": "url",
+        "title": "Merged PR",
+        "icon": "Github",
+        "default": "https://github.com"
+      },
+      "namespace": {
+        "type": "string",
+        "title": "Namespace"
+      },
+      "grafana": {
+        "type": "string",
+        "format": "url",
+        "title": "Grafana",
+        "spec": "embedded-url"
+      },
+      "replicaCount": {
+        "type": "number",
+        "title": "Desired Number of Replicas"
+      },
+      "cpu": {
+        "title": "CPU usage(%)",
+        "type": "number"
+      },
+      "memory": {
+        "title": "Memory usage(%)",
+        "type": "number"
+      }
+    },
+    "required": []
+  },
+  "mirrorProperties": {
+    "cluster": {
+      "title": "Cluster",
+      "path": "Cluster.$title"
+    },
+    "service": {
+      "title": "Service",
+      "path": "Service.$title"
+    }
+  },
+  "calculationProperties": {},
+  "relations": {
+    "Service": {
+      "title": "Service",
+      "target": "service",
+      "required": false,
+      "many": false
+    },
+   "Cluster": {
+    "title": "Cluster",
+    "target": "cluster",
+    "required": false,
+    "many": false
+   }
+  }
+}

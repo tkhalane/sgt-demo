@@ -1,0 +1,7 @@
+apiVersion: sgt.com/v1alpha1
+kind: sgt-cosmosmongodb
+metadata:
+  name: NAME
+  namespace: sgt-apps
+spec:
+  throughput: THROUGHPUT

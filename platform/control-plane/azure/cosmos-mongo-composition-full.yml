@@ -1,0 +1,73 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: cosmos-for-mongo
+spec:
+  compositeTypeRef:
+    apiVersion: sgt.com/v1alpha1
+    kind: cosmosmongodb
+  resources:
+    - name: accountName
+      base:
+        apiVersion: cosmosdb.azure.upbound.io/v1beta1
+        kind: Account
+        metadata:
+          name: sgt-apps-cosmosaccount
+        spec:
+          forProvider:
+            capabilities:
+              - name: EnableMongo
+              - name: MongoDBv3.4
+              - name: mongoEnableDocLevelTTL
+            consistencyPolicy:
+              - consistencyLevel: Strong
+            geoLocation:
+              - failoverPriority: 0
+                location: West Europe
+            kind: MongoDB
+            location: West Europe
+            offerType: Standard
+            resourceGroupName: platform-engineering-sg
+    - name: cosmosMongoDb
+      base:
+        apiVersion: cosmosdb.azure.upbound.io/v1beta1
+        kind: MongoDatabase
+        metadata:
+          labels:
+            sgt.com/nosql-db: sgt-mongo
+          name: sgt-apps-cosmosmongo
+        spec:
+          writeConnectionSecretToRef:
+            name: mongo-db-connection
+            namespace: crossplane-system
+          forProvider:
+            throughput: 400
+            accountNameSelector:
+              matchControllerRef: true
+            resourceGroupName: platform-engineering-sg
+      # patches:
+      #   - fromFieldPath: "spec.throughput"
+      #     toFieldPath: "spec.forProvider.throughput"
+    - name: mongoCollection
+      base:
+        apiVersion: cosmosdb.azure.upbound.io/v1beta1
+        kind: MongoCollection
+        metadata:
+          name: sgt-apps-mongocollection
+        spec:
+          forProvider:
+            accountNameSelector:
+              matchControllerRef: true
+            databaseNameSelector:
+              matchControllerRef: true
+            defaultTtlSeconds: 777
+            index:
+              - keys:
+                  - _id
+                unique: true
+            resourceGroupName: platform-engineering-sg
+            shardKey: uniqueKey
+            throughput: 400
+      # patches:
+      #   - fromFieldPath: "spec.throughput"
+      #     toFieldPath: "spec.forProvider.throughput"

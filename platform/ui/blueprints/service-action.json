@@ -1,0 +1,213 @@
+[
+    {
+      "identifier": "createService",
+      "title": "Create A New Service",
+      "icon": "Github",
+      "userInputs": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Service Name",
+            "pattern": "^[A-Za-z_][A-Za-z0-9@_-]*$"
+          },
+          "team": {
+            "type": "string",
+            "title": "Owning Team",
+            "format": "team",
+            "description": "The team who owns that service"
+          },
+          "domain": {
+            "type": "string",
+            "title": "Domain",
+            "blueprint": "domain",
+            "format": "entity"
+          },
+          "language": {
+            "type": "string",
+            "title": "Language",
+            "enum": [
+              "Angular",
+              "Node",
+              "Java"
+            ],
+            "description": "Choose the type of service to create"
+          },
+          "SDK": {
+            "type": "string",
+            "enum": {
+              "jqQuery": "if .form.language == \"Node\" then [\"Node 16\", \"Node 18\"] elif .form.language == \"Java\" then [\"JDK 16\", \"JDK 17\"] elif .form.language == \"Angular\" then [\"Angular 14\", \"Angular 15\"] else [] end"
+            },
+            "dependsOn": [
+              "language"
+            ]
+          },
+          "communication_method": {
+            "type": "string",
+            "title": "Communication Method",
+            "enum": [
+              "REST API",
+              "GraphQL",
+              "gRPC"
+            ]
+          },
+          "db": {
+            "type": "string",
+            "title": "Database Name"
+          },
+          "replicaCount": {
+            "type": "number",
+            "title": "K8s Replica Count",
+            "minimum": 1,
+            "default": 1,
+            "maximum": 4
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Service short description for internal documentation"
+          }
+        },
+        "required": [
+          "name",
+          "domain",
+          "team"
+        ]
+      },
+      "invocationMethod": {
+        "type": "GITHUB",
+        "omitPayload": false,
+        "omitUserInputs": true,
+        "reportWorkflowStatus": true,
+        "org": "tkhalane",
+        "repo": "sgt-demo",
+        "workflow": "scaffold-golang.yml"
+      },
+      "trigger": "CREATE",
+      "description": "Quickly and easily set up the foundation for a new service. Get a pre-configured starting point that is ready for you to begin building upon."
+    },
+    {
+      "identifier": "scale",
+      "title": "Scale up",
+      "icon": "Argo",
+      "userInputs": {
+        "properties": {
+          "value": {
+            "title": "Value",
+            "description": "This value will determine the scale of number of containers",
+            "type": "number",
+            "default": 1
+          }
+        },
+        "required": [
+          "value"
+        ]
+      },
+      "invocationMethod": {
+        "type": "MOCK"
+      },
+      "trigger": "DAY-2",
+      "description": ""
+    },
+    {
+      "identifier": "addS3Bucket",
+      "title": "Open terraform PR to Add S3 Bucket",
+      "icon": "Terraform",
+      "userInputs": {
+        "properties": {
+          "bucket": {
+            "type": "string",
+            "description": "Bucket"
+          },
+          "acl": {
+            "type": "string",
+            "description": "Acl"
+          },
+          "policy": {
+            "type": "object",
+            "description": "Policy"
+          }
+        },
+        "required": []
+      },
+      "invocationMethod": {
+        "type": "WEBHOOK",
+        "url": "https://demo.getport.io:3006/api/addS3Bucket"
+      },
+      "trigger": "DAY-2",
+      "description": "Create a new pull request to add a S3 bucket using Terraform."
+    },
+    {
+      "identifier": "addMongoDatabase",
+      "title": "Open terraform PR to Add Mongo Database",
+      "icon": "Terraform",
+      "userInputs": {
+        "properties": {
+          "privacy": {
+            "type": "string",
+            "description": "Privacy",
+            "enum": [
+              "Private",
+              "Public"
+            ]
+          }
+        },
+        "required": []
+      },
+      "invocationMethod": {
+        "type": "WEBHOOK",
+        "url": "https://demo.getport.io:3006/api/addMongoDatabase"
+      },
+      "trigger": "DAY-2",
+      "description": "Create a new pull request to add a Mongo using Terraform."
+    },
+    {
+      "identifier": "deploy",
+      "title": "Deploy Application",
+      "icon": "GithubActions",
+      "userInputs": {
+        "properties": {
+          "service": {
+            "title": "Service",
+            "type": "string",
+            "blueprint": "service",
+            "format": "entity"
+          },
+          "environment": {
+            "type": "string",
+            "format": "entity",
+            "blueprint": "cluster",
+            "title": "Environment"
+          },
+          "branch": {
+            "type": "string",
+            "title": "Branch",
+            "enum": [
+              "main",
+              "development",
+              "hotfix/123",
+              "experimental",
+              "staging",
+              "release/1.2"
+            ]
+          }
+        },
+        "required": [
+          "service"
+        ],
+        "order": [
+          "service"
+        ]
+      },
+      "invocationMethod": {
+        "type": "GITHUB",
+        "omitPayload": false,
+        "omitUserInputs": true,
+        "reportWorkflowStatus": true,
+        "org": "tkhalane",
+        "repo": "sgt-demo",
+        "workflow": "deploy.yml"
+      },
+      "trigger": "DAY-2",
+      "description": "Easily deploy a service to a specified environment "
+    }
+]

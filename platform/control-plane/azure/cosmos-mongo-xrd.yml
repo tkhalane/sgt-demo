@@ -1,0 +1,28 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: cosmosmongodbs.sgt.com
+spec:
+  group: sgt.com
+  names:
+    kind: cosmosmongodb
+    plural: cosmosmongodbs
+  versions:
+  - name: v1alpha1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              throughput:
+                type: number
+                default: 500
+            required:
+            - throughput
+  claimNames:
+    kind: sgt-cosmosmongodb
+    plural: sgt-cosmosmongodbs

@@ -1,0 +1,47 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: sgt-postgresql
+spec: 
+  writeConnectionSecretsToNamespace: crossplane-system
+  compositeTypeRef:
+    apiVersion: sgt.com/v1alpha1
+    kind: sqldatabase
+  resources:
+  - name: rdsinstance
+    base:
+      apiVersion: rds.aws.upbound.io/v1beta1
+      kind: Instance
+      metadata:
+        name: sgt-postgresql-db
+      spec:
+        forProvider:
+          region: us-west-1
+          # dbInstanceClass: db.t2.small
+          instanceClass: db.t2.small
+          masterUsername: masteruser
+          engine: postgres
+          engineVersion: "13.7"
+          skipFinalSnapshotBeforeDeletion: true
+          publiclyAccessible: false
+          allocatedStorage: 20
+          autoGeneratePassword: true
+          passwordSecretRef:
+            namespace: crossplane-system
+            name: postgres-secret
+            key: password
+        writeConnectionSecretToRef:
+          name: rds-postgres-consecret
+          namespace: crossplane-system
+    patches:
+    - fromFieldPath: "metadata.name"
+      toFieldPath: "spec.writeConnectionSecretToRef.name"
+      transforms:
+      - type: string
+        string:
+          fmt: "%s-postgresql"
+    connectionDetails:
+        - fromConnectionSecretKey: username
+        - fromConnectionSecretKey: password
+        - fromConnectionSecretKey: endpoint
+        - fromConnectionSecretKey: port

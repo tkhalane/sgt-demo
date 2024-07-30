@@ -1,0 +1,7 @@
+apiVersion: sgt.com/v1alpha1
+kind: custom-database
+metadata:
+  name: NAME
+  namespace: sgt-apps
+spec:
+  region: REGION

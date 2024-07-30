@@ -1,0 +1,11 @@
+apiVersion: sgt.com/v1alpha1
+kind: sgt-sqldatabase
+metadata:
+  name: NAME
+  namespace: sgt-apps
+spec:
+  parameters:
+    version: VERSION
+  writeConnectionSecretToRef:
+    name: NAME
+

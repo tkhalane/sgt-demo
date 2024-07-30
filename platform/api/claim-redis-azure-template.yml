@@ -1,0 +1,7 @@
+apiVersion: sgt.com/v1alpha1
+kind: sgt-rediscache
+metadata:
+  name: NAME
+  namespace: sgt-apps
+spec:
+  version: VERSION
