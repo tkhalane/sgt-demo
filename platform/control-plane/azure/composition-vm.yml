@@ -1,13 +1,13 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: crossplane-quickstart-vm-with-network
+  name: crossplane-sgt-vm-with-network
 spec:
   compositeTypeRef:
     apiVersion: sgt.com/v1alpha1
-    kind: XVirtualMachine
+    kind: XSgtVirtualMachine
   resources:
-    - name: quickstart-vm
+    - name: sgt-vm
       base:
         apiVersion: compute.azure.upbound.io/v1beta1
         kind: LinuxVirtualMachine
@@ -40,14 +40,14 @@ spec:
               map: 
                 EU: "Sweden Central"
                 ZA: "South Africa North"
-    - name: quickstart-nic
+    - name: sgt-nic
       base:
         apiVersion: network.azure.upbound.io/v1beta1
         kind: NetworkInterface
         spec:
           forProvider:
             ipConfiguration:
-              - name: crossplane-quickstart-configuration
+              - name: crossplane-sgt-configuration
                 privateIpAddressAllocation: Dynamic
                 subnetIdSelector:
                   matchControllerRef: true
@@ -61,7 +61,7 @@ spec:
               map: 
                 EU: "Sweden Central"
                 ZA: "South Africa North"
-    - name: quickstart-subnet
+    - name: sgt-subnet
       base:
         apiVersion: network.azure.upbound.io/v1beta1
         kind: Subnet
@@ -80,7 +80,7 @@ spec:
               map: 
                 EU: "Sweden Central"
                 ZA: "South Africa North"
-    - name: quickstart-network
+    - name: sgt-network
       base:
         apiVersion: network.azure.upbound.io/v1beta1
         kind: VirtualNetwork

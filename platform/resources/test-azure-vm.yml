@@ -1,0 +1,7 @@
+apiVersion: sgt.com/v1alpha1
+kind: SgtVirtualMachine
+metadata:
+  name: test-sgt-vm
+  namespace: sgt-apps
+spec:
+  region: ZA

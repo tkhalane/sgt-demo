@@ -5,7 +5,7 @@ metadata:
 spec:
   compositeTypeRef:
     apiVersion: sgt.com/v1alpha1
-    kind: rediscache
+    kind: XSgtRedisCache
   resources:
     - name: sgtRedisCache 
       base:

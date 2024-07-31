@@ -1,12 +1,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: rediscaches.sgt.com
+  name: xsgt-rediscaches.sgt.com
 spec:
   group: sgt.com
   names:
     kind: XSgtRedisCache
-    plural: xsgtrediscaches
+    plural: xsgt-rediscaches
   versions:
   - name: v1alpha1
     served: true
