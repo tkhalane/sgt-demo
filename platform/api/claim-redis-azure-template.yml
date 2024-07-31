@@ -1,5 +1,5 @@
 apiVersion: sgt.com/v1alpha1
-kind: sgt-rediscache
+kind: SgtRedisCache
 metadata:
   name: NAME
   namespace: sgt-apps

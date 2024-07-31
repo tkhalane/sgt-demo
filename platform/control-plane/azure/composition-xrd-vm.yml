@@ -1,12 +1,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xvirtualmachines.sgt.com
+  name: xsgtvirtualmachines.sgt.com
 spec:
   group: sgt.com
   names:
-    kind: XVirtualMachine
-    plural: xvirtualmachines
+    kind: XSgtVirtualMachine
+    plural: xsgtvirtualmachines
   versions:
   - name: v1alpha1
     served: true
@@ -26,5 +26,5 @@ spec:
             required:
               - region
   claimNames:
-    kind: VirtualMachine
-    plural: virtualmachines
+    kind: SgtVirtualMachine
+    plural: sgt-virtualmachines

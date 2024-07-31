@@ -5,14 +5,14 @@ metadata:
 spec:
   compositeTypeRef:
     apiVersion: sgt.com/v1alpha1
-    kind: cosmosmongodb
+    kind: XSgtCosmosMongodb
   resources:
     - name: accountName
       base:
         apiVersion: cosmosdb.azure.upbound.io/v1beta1
         kind: Account
         metadata:
-          name: sgt-apps-cosmosaccount
+          name: sgt-cosmosaccount
         spec:
           forProvider:
             capabilities:
@@ -35,7 +35,7 @@ spec:
         metadata:
           labels:
             sgt.com/nosql-db: sgt-mongo
-          name: sgt-apps-cosmosmongo
+          name: sgt-cosmosmongo
         spec:
           writeConnectionSecretToRef:
             name: mongo-db-connection
@@ -53,7 +53,7 @@ spec:
         apiVersion: cosmosdb.azure.upbound.io/v1beta1
         kind: MongoCollection
         metadata:
-          name: sgt-apps-mongocollection
+          name: sgt-mongocollection
         spec:
           forProvider:
             accountNameSelector:
