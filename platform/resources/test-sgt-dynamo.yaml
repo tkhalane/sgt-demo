@@ -1,7 +1,7 @@
 apiVersion: sgt.com/v1alpha1
 kind: SgtNoSqlDatabase
 metadata:
-  name: NAME
+  name: test-sgt
   namespace: sgt-apps
 spec:
-  region: REGION
+  region: EU

@@ -1,0 +1,16 @@
+  - name: key
+    base:
+      apiVersion: kms.aws.upbound.io/v1beta1
+      kind: Key
+      metadata:
+        labels:
+          demo.sgt.com/name: wealth-key
+        name: wealth-key
+      spec:
+        forProvider:
+          deletionWindowInDays: 1
+          description: Wealth key
+          region: af-south-1
+          tags: 
+            name: wealth-key
+            purpose: demo

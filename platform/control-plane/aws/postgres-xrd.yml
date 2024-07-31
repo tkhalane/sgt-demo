@@ -1,12 +1,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: sqldatabases.sgt.com
+  name:  xsgt-sqldatabases.sgt.com
 spec:
   group: sgt.com
   names:
     kind: XSgtSqlDatabase
-    plural: XSgtSqlDatabases
+    plural: xsgt-sqldatabases
   connectionSecretKeys:
   - username
   - password

@@ -3,60 +3,55 @@ kind: Composition
 metadata:
   name: sgt-postgresql
 spec: 
-  writeConnectionSecretToNamespace: sgt-apps
+  writeConnectionSecretsToNamespace: crossplane-system
   compositeTypeRef:
     apiVersion: sgt.com/v1alpha1
     kind: XSgtSqlDatabase
   resources:
-  - name: rdsinstance
-    base:
-      apiVersion: rds.aws.upbound.io/v1beta2
-      kind: Instance
-      metadata:
-        labels: 
-          demo.sgt.com/db-name: wealth-db 
-        name: sgt-postgresql-db
-      spec:
-        forProvider:
-          region: af-south-1
-          allocatedStorage: 20
-          autoGeneratePassword: true
-          autoMinorVersionUpgrade: true
-          backupRetentionPeriod: 14
-          backupWindow: 09:46-10:16
-          dbName: wealthdb
-          engine: postgres
-          engineVersion: "16.1"
-          instanceClass: db.t3.micro
-          kmsKeyIdSelector:
-            matchLabels:
-              demo.sgt.com/key-name: wealth-key
-          maintenanceWindow: Mon:00:00-Mon:03:00
-          passwordSecretRef:
-            key: password
-            name: sgt-dbinstance
-            namespace: sgt-apps
-          publiclyAccessible: false
-          skipFinalSnapshot: true
-          storageEncrypted: true
-          storageType: gp2
-          username: sgtadmin
-        writeConnectionSecretToRef:
-          name: sgt-rds-secret
-          namespace: sgt-app
-    patches:
-    - type: FromCompositeFieldPath
-      fromFieldPath: "spec.writeConnectionSecretToRef.name"
-      toFieldPath: "spec.writeConnectionSecretToRef.name"
-    - type: FromCompositeFieldPath
-      fromFieldPath: "spec.version"
-      toFieldPath: "spec.forProvider.engineVersion"
-    connectionDetails:
-        - name: username
-          fromConnectionSecretKey: username
-        - name: password
-          fromConnectionSecretKey: password
-        - name: endpoint
-          fromConnectionSecretKey: endpoint
-        - name: port
-          fromConnectionSecretKey: port
+    - name: rdsinstance
+      base:
+        apiVersion: rds.aws.upbound.io/v1beta1
+        kind: Instance
+        metadata:
+          labels: 
+            demo.sgt.com/db-name: wealth-db 
+          name: sgt-postgresql-db
+        spec:
+          forProvider:
+            dbSubnetGroupName: sgt-demo-subnetgroup
+            region: af-south-1
+            allocatedStorage: 20
+            autoGeneratePassword: true
+            autoMinorVersionUpgrade: true
+            backupRetentionPeriod: 14
+            backupWindow: 09:46-10:16
+            dbName: wealthdb
+            engine: postgres
+            engineVersion: "16.1"
+            instanceClass: db.t3.micro
+            kmsKeyId: "arn:aws:kms:af-south-1:314051162948:key/629c06b0-2522-4331-992e-11134ccc93f8"
+            maintenanceWindow: Mon:00:00-Mon:03:00
+            passwordSecretRef:
+              key: password
+              name: sgt-dbinstance
+              namespace: sgt-apps
+            publiclyAccessible: false
+            skipFinalSnapshot: true
+            storageEncrypted: true
+            storageType: gp2
+            username: sgtadmin
+          PublishConnectionDetailsTo:
+            name: sgt-rds-secret
+      patches:
+      - type: FromCompositeFieldPath
+        fromFieldPath: "spec.version"
+        toFieldPath: "spec.forProvider.engineVersion"
+      connectionDetails:
+          - name: username
+            fromConnectionSecretKey: username
+          - name: password
+            fromConnectionSecretKey: password
+          - name: endpoint
+            fromConnectionSecretKey: endpoint
+          - name: port
+            fromConnectionSecretKey: port
