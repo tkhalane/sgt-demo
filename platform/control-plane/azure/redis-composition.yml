@@ -18,7 +18,7 @@ spec:
             capacity: 1
             enableNonSslPort: false
             family: P
-            location: East US
+            location: "South Africa North"
             redisConfiguration:
               - maxmemoryDelta: 2
                 maxmemoryPolicy: allkeys-lru

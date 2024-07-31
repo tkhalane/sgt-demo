@@ -4,8 +4,7 @@ metadata:
   name: NAME
   namespace: sgt-apps
 spec:
-  parameters:
-    version: VERSION
+  version: VERSION
   writeConnectionSecretToRef:
     name: NAME
 

@@ -1,11 +1,11 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: dynamo-with-bucket
+  name: sgt-dynamodb-with-bucket
 spec:
   compositeTypeRef:
     apiVersion: sgt.com/v1alpha1
-    kind: database
+    kind: XSgtNoSqlDatabase
   resources:
     - name: s3Bucket
       base:
@@ -16,7 +16,7 @@ spec:
         spec:
           forProvider:
             name: default
-            region: "us-east-2"
+            region: "af-south-1"
       patches:
         - fromFieldPath: "spec.region"
           toFieldPath: "spec.forProvider.region"
@@ -24,7 +24,7 @@ spec:
             - type: map
               map: 
                 EU: "eu-north-1"
-                US: "us-east-2"
+                ZA: "af-south-1"
     - name: dynamoDB
       base:
         apiVersion: dynamodb.aws.upbound.io/v1beta1
@@ -39,7 +39,7 @@ spec:
               - name: S3ID
                 type: S
             hashKey: S3ID
-            region: "us-east-2"
+            region: "af-south-1"
       patches:
         - fromFieldPath: "spec.region"
           toFieldPath: "spec.forProvider.region"
@@ -47,4 +47,4 @@ spec:
             - type: map
               map: 
                 EU: "eu-west-1"
-                US: "us-east-2"
+                ZA: "af-south-1"

@@ -39,7 +39,7 @@ spec:
             - type: map
               map: 
                 EU: "Sweden Central"
-                US: "Central US"
+                ZA: "South Africa North"
     - name: quickstart-nic
       base:
         apiVersion: network.azure.upbound.io/v1beta1
@@ -60,7 +60,7 @@ spec:
             - type: map
               map: 
                 EU: "Sweden Central"
-                US: "Central US"
+                ZA: "South Africa North"
     - name: quickstart-subnet
       base:
         apiVersion: network.azure.upbound.io/v1beta1
@@ -79,7 +79,7 @@ spec:
             - type: map
               map: 
                 EU: "Sweden Central"
-                US: "Central US"
+                ZA: "South Africa North"
     - name: quickstart-network
       base:
         apiVersion: network.azure.upbound.io/v1beta1
@@ -97,4 +97,4 @@ spec:
             - type: map
               map: 
                 EU: "Sweden Central"
-                US: "Central US"
+                ZA: "South Africa North"

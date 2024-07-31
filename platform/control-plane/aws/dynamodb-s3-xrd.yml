@@ -1,12 +1,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: databases.sgt.com
+  name: noqsldatabases.sgt.com
 spec:
   group: sgt.com
   names:
-    kind: database
-    plural: databases
+    kind: XSgtNoSqlDatabase
+    plural: XSgtNoSqlDatabases
   versions:
   - name: v1alpha1
     served: true
@@ -22,10 +22,10 @@ spec:
                 type: string
                 oneOf:
                   - pattern: '^EU$'
-                  - pattern: '^US$'
+                  - pattern: '^ZA$'
             required:
               - region
   claimNames:
-    kind: custom-database
-    plural: custom-databases
+    kind: sgt-nosql-database
+    plural: sgt-nosql-databases
  

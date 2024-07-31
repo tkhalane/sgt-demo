@@ -22,7 +22,7 @@ spec:
                 type: string
                 oneOf:
                   - pattern: '^EU$'
-                  - pattern: '^US$'
+                  - pattern: '^ZA$'
             required:
               - region
   claimNames:

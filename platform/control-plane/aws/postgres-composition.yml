@@ -3,45 +3,60 @@ kind: Composition
 metadata:
   name: sgt-postgresql
 spec: 
-  writeConnectionSecretsToNamespace: crossplane-system
+  writeConnectionSecretToNamespace: sgt-apps
   compositeTypeRef:
     apiVersion: sgt.com/v1alpha1
-    kind: sqldatabase
+    kind: XSgtSqlDatabase
   resources:
   - name: rdsinstance
     base:
-      apiVersion: rds.aws.upbound.io/v1beta1
+      apiVersion: rds.aws.upbound.io/v1beta2
       kind: Instance
       metadata:
+        labels: 
+          demo.sgt.com/db-name: wealth-db 
         name: sgt-postgresql-db
       spec:
         forProvider:
-          region: us-west-1
-          # dbInstanceClass: db.t2.small
-          instanceClass: db.t2.small
-          masterUsername: masteruser
-          engine: postgres
-          engineVersion: "13.7"
-          skipFinalSnapshotBeforeDeletion: true
-          publiclyAccessible: false
+          region: af-south-1
           allocatedStorage: 20
           autoGeneratePassword: true
+          autoMinorVersionUpgrade: true
+          backupRetentionPeriod: 14
+          backupWindow: 09:46-10:16
+          dbName: wealthdb
+          engine: postgres
+          engineVersion: "16.1"
+          instanceClass: db.t3.micro
+          kmsKeyIdSelector:
+            matchLabels:
+              demo.sgt.com/key-name: wealth-key
+          maintenanceWindow: Mon:00:00-Mon:03:00
           passwordSecretRef:
-            namespace: crossplane-system
-            name: postgres-secret
             key: password
+            name: sgt-dbinstance
+            namespace: sgt-apps
+          publiclyAccessible: false
+          skipFinalSnapshot: true
+          storageEncrypted: true
+          storageType: gp2
+          username: sgtadmin
         writeConnectionSecretToRef:
-          name: rds-postgres-consecret
-          namespace: crossplane-system
+          name: sgt-rds-secret
+          namespace: sgt-app
     patches:
-    - fromFieldPath: "metadata.name"
+    - type: FromCompositeFieldPath
+      fromFieldPath: "spec.writeConnectionSecretToRef.name"
       toFieldPath: "spec.writeConnectionSecretToRef.name"
-      transforms:
-      - type: string
-        string:
-          fmt: "%s-postgresql"
+    - type: FromCompositeFieldPath
+      fromFieldPath: "spec.version"
+      toFieldPath: "spec.forProvider.engineVersion"
     connectionDetails:
-        - fromConnectionSecretKey: username
-        - fromConnectionSecretKey: password
-        - fromConnectionSecretKey: endpoint
-        - fromConnectionSecretKey: port
+        - name: username
+          fromConnectionSecretKey: username
+        - name: password
+          fromConnectionSecretKey: password
+        - name: endpoint
+          fromConnectionSecretKey: endpoint
+        - name: port
+          fromConnectionSecretKey: port

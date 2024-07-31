@@ -5,8 +5,8 @@ metadata:
 spec:
   group: sgt.com
   names:
-    kind: sqldatabase
-    plural: sqldatabases
+    kind: XSgtSqlDatabase
+    plural: XSgtSqlDatabases
   connectionSecretKeys:
   - username
   - password
@@ -23,19 +23,14 @@ spec:
           spec:
             type: object
             properties:
-              parameters:
-                type: object
-                properties:
-                  version:
-                    type: string
-                    enum:
-                    - "11"
-                    - "12"
-                    default: "12"
-                required:
-                - version
-            required: 
-            - parameters
+              version:
+                type: string
+                enum:
+                - "15"
+                - "16.1"
+                default: "16.1"
+            required:
+            - version
   claimNames:
-    kind: sgt-sqldatabase
+    kind: SgtSqlDatabase
     plural: sgt-sqldatabases
