@@ -1,0 +1,39 @@
+name: Create AZURE Redis
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        required: true
+        description: "The name of the redis cache"
+      version:
+        type: string
+        required: true
+        default: "6"
+        description: "The version of redis"
+env:
+  name: ${{ inputs.name }}
+  version: ${{ inputs.version }}
+
+jobs:
+  deploy-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Create Azure Redis
+        run: |
+          chmod +x platform/helpers/create-azure-redis.sh
+          ./platform/helpers/create-azure-redis.sh ${{ env.name }} ${{ env.version }}
+      - name: Commit changes
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Create redis in azure ${{ env.name }}"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ORG_TOKEN }}
+          branch: ${{ github.ref }}

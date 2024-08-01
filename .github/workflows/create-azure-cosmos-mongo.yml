@@ -1,0 +1,39 @@
+name: Create AZURE Cosmos Mongo DB
+on:
+  workflow_dispatch:
+    inputs:
+      dbname:
+        required: true
+        description: "The name of the db and s"
+      throughput:
+        type: number
+        required: true
+        description: "The db and collection throughput"
+env:
+  name: ${{ inputs.dbname }}
+  throughput: ${{ inputs.throughput }}
+
+jobs:
+  deploy-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Create Azure Cosmos DB
+        run: |
+          chmod +x platform/helpers/create-azure-cosmos-mongo.sh
+          ./platform/helpers/create-azure-cosmos-mongo.sh ${{ env.name }} ${{env.throughput}}
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.ORG_TOKEN }}
+          commit-message: New Mongo DB request from Devs
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: azure-cosmos-mongodb-request-${{ env.name }}
+          delete-branch: true
+          title: "New Cosmos for MongoDB Request"

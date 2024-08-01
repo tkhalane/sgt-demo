@@ -1,0 +1,38 @@
+name: Create a Postgres DB
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        required: true
+        description: "The name of the postgres db"
+      version:
+        type: string
+        required: true
+        description: "The version of the Engine"
+        default: "11"
+env:
+  name: ${{ inputs.name }}
+  version: ${{ inputs.version }}
+jobs:
+  deploy-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Create Postgres DB
+        run: |
+          chmod +x platform/helpers/create-postgres.sh
+          ./platform/helpers/create-postgres.sh ${{ env.name }} ${{ env.version }}
+      - name: Commit changes
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Create postgres ${{ env.name }}"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ORG_TOKEN }}
+          branch: ${{ github.ref }}

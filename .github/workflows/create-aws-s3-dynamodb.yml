@@ -1,0 +1,41 @@
+name: Create AWS Serverless
+on:
+  workflow_dispatch:
+    inputs:
+      dbname:
+        required: true
+        description: "The name of the db and s"
+      s3bucketname:
+        required: true
+        description: "The name of the db and s"
+      region:
+        required: true
+        description: "The region where the db is hosted"
+env:
+  name: ${{ inputs.dbname }}
+  s3bucketname: ${{ inputs.s3bucketname }}
+  region: ${{ inputs.region }}
+
+jobs:
+  deploy-app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Create AWS Serverless
+        run: |
+          chmod +x platform/helpers/create-aws-serverless.sh
+          ./platform/helpers/create-aws-serverless.sh ${{ env.name }} ${{ env.region }} ${{ env.s3bucketname }}
+      - name: Commit changes
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "Create aws serverless ${{ env.name }}"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ORG_TOKEN }}
+          branch: ${{ github.ref }}
