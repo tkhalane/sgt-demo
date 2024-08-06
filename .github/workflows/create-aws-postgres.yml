@@ -88,7 +88,7 @@ jobs:
 
   teardown:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.action == 'destroy'}}
+    if: ${{ github.event.inputs.action == 'delete'}}
     defaults:
       run:
         shell: bash
