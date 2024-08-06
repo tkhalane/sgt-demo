@@ -29,7 +29,6 @@ spec:
             engine: postgres
             engineVersion: "16.1"
             instanceClass: db.t3.micro
-            kmsKeyId: "arn:aws:kms:af-south-1:314051162948:key/629c06b0-2522-4331-992e-11134ccc93f8"
             maintenanceWindow: Mon:00:00-Mon:03:00
             passwordSecretRef:
               key: password
