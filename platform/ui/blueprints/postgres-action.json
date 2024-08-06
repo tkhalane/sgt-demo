@@ -1,0 +1,62 @@
+{
+    "identifier": "create_aws_db",
+    "title": "AWS: Manage A Postgres DB",
+    "icon": "AWS",
+    "description": "Quickly get a new SQL DB for your microservices. This request will provision a new PostgreSQL Database",
+    "userInputs": {
+      "properties": {
+        "name": {
+          "title": "name",
+          "type": "string"
+        },
+        "version": {
+          "icon": "DefaultProperty",
+          "title": "version",
+          "type": "string",
+          "enum": [
+            "\"11\"",
+            "\"12\""
+          ],
+          "enumColors": {
+            "\"11\"": "lightGray",
+            "\"12\"": "lightGray"
+          }
+        },
+        "request": {
+          "title": "action",
+          "type": "string",
+          "enum": [
+            "create",
+            "delete"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "name",
+        "request"
+      ],
+      "order": [
+        "name",
+        "version",
+        "request"
+      ]
+    },
+    "invocationMethod": {
+      "type": "GITHUB",
+      "reportWorkflowStatus": true,
+      "org": "tkhalane",
+      "repo": "sgt-demo",
+      "workflow": "create-aws-postgres.yml",
+      "workflowInputs": {
+        "{{if (.inputs | has(\"ref\")) then \"ref\" else null end}}": "{{.inputs.\"ref\"}}",
+        "{{if (.inputs | has(\"name\")) then \"name\" else null end}}": "{{.inputs.\"name\"}}",
+        "{{if (.inputs | has(\"version\")) then \"version\" else null end}}": "{{.inputs.\"version\"}}",
+        "{{if (.inputs | has(\"request\")) then \"request\" else null end}}": "{{.inputs.\"request\"}}"
+      }
+    },
+    "trigger": "CREATE",
+
+    "requiredApproval": true,
+    "publish": true
+  }

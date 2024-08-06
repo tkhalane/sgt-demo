@@ -61,7 +61,7 @@ jobs:
         env:
           TF_VAR_vpc_id: ${{ env.AWS_DEFAULT_VPC }}
       
-  deploy-app:
+  create-db:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.request == 'create'}}
     needs: build
