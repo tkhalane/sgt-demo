@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: print variables
-        run: "default vpc: ${{ env.AWS_DEFAULT_VPC }}  ${{secrets.AWS_ACCESS_VPC_ID }}" 
+        run: "default vpc: ${{ env.AWS_DEFAULT_VPC }}" 
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -61,7 +61,7 @@ jobs:
         id: terraform_apply
         run: terraform apply -auto-approve
         env:
-          TF_VAR_vpc_id: ${{inputs.vpc}}
+          TF_VAR_vpc_id: ${{ env.AWS_DEFAULT_VPC }}
       
   create-db:
     runs-on: ubuntu-latest
