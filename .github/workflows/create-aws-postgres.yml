@@ -10,7 +10,7 @@ on:
         required: true
         description: "The name of the postgres db"
       vpc:
-        required: true
+        required: false
         description: "VPC Id"
       version:
         type: string
