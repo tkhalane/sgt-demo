@@ -1,0 +1,9 @@
+apiVersion: sgt.com/v1alpha1
+kind: SgtSqlDatabase
+metadata:
+  name: sgt-demo
+  namespace: sgt-apps
+spec:
+  version: "15"
+  writeConnectionSecretToRef:
+    name: sgt-demo
