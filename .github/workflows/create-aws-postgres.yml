@@ -41,6 +41,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: print variables
+        run: "default vpc: ${{ env.AWS_DEFAULT_VPC }}  ${{secrets.AWS_ACCESS_VPC_ID }}" 
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -78,7 +81,7 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
-          git commit -m "Create postgres ${{ env.name }}"
+          git commit -m "Create postgres ${{ env.name }} "
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
