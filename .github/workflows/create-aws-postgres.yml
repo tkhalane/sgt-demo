@@ -2,7 +2,7 @@ name: Create a Postgres DB
 on:
   workflow_dispatch:
     inputs:
-      action:
+      request:
         description: "Action to perform (apply/destroy)"
         required: true
         default: "destroy"
@@ -27,13 +27,13 @@ env:
   AWS_DEFAULT_VPC: ${{secrets.AWS_ACCESS_VPC_ID }}
   PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
   PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
-  ACTION: ${{ github.event.inputs.action }}
+  ACTION: ${{ github.event.inputs.request }}
   PORT_RUN_ID: ${{ fromJson(inputs.port_context).runId }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.action == 'create'}}
+    if: ${{ github.event.inputs.request == 'create'}}
     defaults:
       run:
         shell: bash
@@ -63,7 +63,7 @@ jobs:
       
   deploy-app:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.action == 'create'}}
+    if: ${{ github.event.inputs.request == 'create'}}
     needs: build
     steps:
       - uses: actions/checkout@v3
@@ -88,7 +88,7 @@ jobs:
 
   teardown:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.action == 'delete'}}
+    if: ${{ github.event.inputs.request == 'delete'}}
     defaults:
       run:
         shell: bash
