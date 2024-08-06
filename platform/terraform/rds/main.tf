@@ -34,6 +34,6 @@ module "rds_subnet_group" {
   source  = "terraform-aws-modules/rds/aws"
   version = "6.8.0"
 
-  name        = "sgt-demo-subnetgroup"
+  identifier        = "sgt-demo-subnetgroup"
   subnet_ids = module.vpc.private_subnets
 }
