@@ -9,6 +9,9 @@ on:
       name:
         required: true
         description: "The name of the postgres db"
+      vpc:
+        required: true
+        description: "VPC Id"
       version:
         type: string
         required: true
@@ -55,7 +58,7 @@ jobs:
         id: terraform_apply
         run: terraform apply -auto-approve
         env:
-          TF_VAR_vpc_id: ${{ env.AWS_DEFAULT_VPC }}
+          TF_VAR_vpc_id: ${{inputs.vpc}}
       
   create-db:
     runs-on: ubuntu-latest
