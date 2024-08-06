@@ -14,10 +14,7 @@ on:
         required: true
         description: "The version of the Engine"
         default: "11"
-      port_context:
-        required: true
-        description: "Port's payload (who triggered, port_context, etc...)"
-        type: string
+
 
 env:
   name: ${{ inputs.name }}
@@ -28,7 +25,6 @@ env:
   PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
   PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
   ACTION: ${{ github.event.inputs.request }}
-  PORT_RUN_ID: ${{ fromJson(inputs.port_context).runId }}
 
 jobs:
   build:
