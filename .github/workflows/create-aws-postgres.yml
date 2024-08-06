@@ -24,7 +24,7 @@ env:
   version: ${{ inputs.version }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_DEFAULT_VPC: ${{secrets.AWS_ACCESS_VPC_ID }}
+  AWS_DEFAULT_VPC: ${{vars.DEFAULT_VPC_ID }}
   PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
   PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
   ACTION: ${{ github.event.inputs.request }}
