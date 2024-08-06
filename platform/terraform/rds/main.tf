@@ -10,8 +10,12 @@ data "aws_availability_zones" "available" {
   }
 }
 
+data "aws_vpc" "default_vpc" {
+  id = var.vpc_id
+}
+
 resource "aws_subnet" "private_subnet_1" {
-  vpc_id            = var.vpc_id
+  vpc_id            = data.aws_vpc.default_vpc
   cidr_block        = "10.0.1.0/24"
   availability_zone = data.aws_availability_zones.available.names[0]
 
@@ -21,7 +25,7 @@ resource "aws_subnet" "private_subnet_1" {
 }
 
 resource "aws_subnet" "private_subnet_2" {
-  vpc_id            =  var.vpc_id
+  vpc_id            =  data.aws_vpc.default_vpc
   cidr_block        = "10.0.2.0/24"
   availability_zone = data.aws_availability_zones.available.names[1]
 
@@ -30,10 +34,15 @@ resource "aws_subnet" "private_subnet_2" {
   }
 }
 
+
 module "rds_subnet_group" {
   source  = "terraform-aws-modules/rds/aws"
   version = "6.8.0"
 
   identifier        = "sgt-demo-subnetgroup"
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = [
+    aws_subnet.private_subnet_1.id,
+    aws_subnet.private_subnet_2.id
+
+    ]
 }
