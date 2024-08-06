@@ -2,6 +2,10 @@ name: Create a Postgres DB
 on:
   workflow_dispatch:
     inputs:
+      action:
+        description: "Action to perform (apply/destroy)"
+        required: true
+        default: "destroy"
       name:
         required: true
         description: "The name of the postgres db"
@@ -10,12 +14,57 @@ on:
         required: true
         description: "The version of the Engine"
         default: "11"
+      port_context:
+        required: true
+        description: "Port's payload (who triggered, port_context, etc...)"
+        type: string
+
 env:
   name: ${{ inputs.name }}
   version: ${{ inputs.version }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_VPC: ${{secrets.AWS_ACCESS_VPC_ID }}
+  PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
+  PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
+  ACTION: ${{ github.event.inputs.action }}
+  PORT_RUN_ID: ${{ fromJson(inputs.port_context).runId }}
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'create'}}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./platform/terraform/rds
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format
+        run: terraform fmt
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Apply
+        id: terraform_apply
+        run: terraform apply -auto-approve
+        env:
+          TF_VAR_vpc_id: ${{ env.AWS_DEFAULT_VPC }}
+      
   deploy-app:
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'create'}}
+    needs: build
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,3 +85,33 @@ jobs:
         with:
           github_token: ${{ secrets.ORG_TOKEN }}
           branch: ${{ github.ref }}
+
+  teardown:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.action == 'destroy'}}
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./platform/terraform/rds
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format
+        run: terraform fmt
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Destroy
+        id: terraform_destroy
+        run: terraform destroy -auto-approve
+        env:
+          TF_VAR_vpc_id: ${{ env.AWS_DEFAULT_VPC }}    

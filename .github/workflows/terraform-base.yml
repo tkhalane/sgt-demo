@@ -1,0 +1,36 @@
+name: Terraform Base
+
+on:
+  workflow_call:
+    inputs:
+      working_directory:
+        required: true
+        description: "working directory"
+        type: string
+
+jobs:
+  initialize_terraform: # Combine into a single job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{github.event.inputs.working_directory}}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format
+        run: terraform fmt
+
+      - name: Terraform Validate
+        run: terraform validate
+
+
+ 
