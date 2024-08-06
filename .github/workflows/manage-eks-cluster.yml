@@ -15,7 +15,7 @@ on:
         required: true
         default: "destroy"
       port_context:
-        required: true
+        required: false
         description: "Port's payload (who triggered, port_context, etc...)"
         type: string
 
