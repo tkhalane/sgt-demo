@@ -57,3 +57,17 @@ kubectl describe  table.dynamodb.aws.upbound.io/sgt-wealthbonus-qdj7b-nds8s
 kubectl get managed  
 kubectl api-resources
  kubectl get claim -n sgt-apps
+
+kubectl logs ingress-nginx-controller-86b55bb769-qb258 -n ingress-nginx
+#or
+kubectl exec -it ingress-nginx-controller-86b55bb769-qb258 -n ingress-nginx -- /bin/sh
+cd /etc/nginx/
+cat nginx.conf
+
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+# password = 76ebwkMLjhcihGiX replaced with Password01#
+#In order to access the server UI you have the flowing options:
+# nc-kJC1qpSSJ1o1R
+#1. 
+kubectl port-forward service/argocd-server -n argocd 8080:443
