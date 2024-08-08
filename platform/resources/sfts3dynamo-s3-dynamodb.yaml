@@ -1,7 +1,0 @@
-apiVersion: sgt.com/v1alpha1
-kind: SgtNoSqlDatabase
-metadata:
-  name: sfts3dynamo
-  namespace: sgt-apps
-spec:
-  region: EU
