@@ -1,0 +1,7 @@
+apiVersion: sgt.com/v1alpha1
+kind: SgtNoSqlDatabase
+metadata:
+  name: policyadmin
+  namespace: sgt-apps
+spec:
+  region: EU
