@@ -1,7 +1,0 @@
-apiVersion: sgt.com/v1alpha1
-kind: SgtCosmosMongodb
-metadata:
-  name: taxservice
-  namespace: sgt-apps
-spec:
-  throughput: 400
