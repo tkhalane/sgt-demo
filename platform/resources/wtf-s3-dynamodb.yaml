@@ -1,7 +1,0 @@
-apiVersion: sgt.com/v1alpha1
-kind: SgtNoSqlDatabase
-metadata:
-  name: wtf
-  namespace: sgt-apps
-spec:
-  region: EU

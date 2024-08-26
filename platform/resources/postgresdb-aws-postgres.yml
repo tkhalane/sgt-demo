@@ -1,9 +1,0 @@
-apiVersion: sgt.com/v1alpha1
-kind: SgtSqlDatabase
-metadata:
-  name: postgresdb
-  namespace: sgt-apps
-spec:
-  version: "15"
-  writeConnectionSecretToRef:
-    name: postgresdb
