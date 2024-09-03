@@ -1,0 +1,7 @@
+apiVersion: sgt.com/v1alpha1
+kind: SgtRedisCache
+metadata:
+  name: rem_fas
+  namespace: sgt-apps
+spec:
+  version: "6"
