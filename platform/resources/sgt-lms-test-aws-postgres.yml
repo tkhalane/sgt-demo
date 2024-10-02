@@ -1,0 +1,9 @@
+apiVersion: sgt.com/v1alpha1
+kind: SgtSqlDatabase
+metadata:
+  name: sgt-lms-test
+  namespace: sgt-apps
+spec:
+  version: "16"
+  writeConnectionSecretToRef:
+    name: sgt-lms-test
